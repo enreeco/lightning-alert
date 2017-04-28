@@ -1,0 +1,125 @@
+<aura:component access="GLOBAL" >
+    <aura:handler event="c:AlertEvt" action="{!c.handleEvent}"/>
+
+	<aura:attribute name="show" 
+                    type="Boolean" 
+                    access="private"
+                    default="false"
+                    description="Show/Hide"/>
+    
+    <aura:attribute name="mode" 
+                    type="String" 
+                    access="private"
+                    default="prompt"
+                    description="alert, toast, prompt"/>
+
+    <aura:attribute name="fixed" 
+                    type="Boolean" 
+                    access="private"
+                    default="false"
+                    description="The modal is not closable"/>
+
+	<aura:attribute name="type" 
+                    type="String" 
+                    access="private"
+                    default="error"
+                    description="Type of alert: default, success, error, warning"/>
+
+    <aura:attribute name="message" 
+                    type="String" 
+                    access="private"
+                    description="Main alert message"/>
+
+    <aura:attribute name="details" 
+                    type="String" 
+                    access="private"
+                    description="Details message"/>
+	<div class="slds-scope">
+        <!-- PROMPT START -->
+        <div 
+            role="alertdialog" 
+            tabindex="-1" 
+            aria-labelledby="prompt-heading-id" 
+            aria-describedby="prompt-message-wrapper" 
+            class="{!'slds-modal slds-fade-in-open slds-modal--prompt ' +((v.show &amp;&amp; v.mode == 'prompt')?'slds-fade-in-open':'slds-hide')}">
+            <div class="slds-modal__container">
+                <div class="{!'slds-modal__header slds-theme--'+v.type+' slds-theme--alert-texture'}">
+                    <aura:renderIf isTrue="{! !v.fixed}">
+                        <button onclick="{!c.closeAlert}" class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                            <lightning:icon iconName="utility:close" 
+                                    variant="bare" 
+                                    size="medium"/>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                    </aura:renderIf>
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">{!v.message}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <p>{!v.details}</p>
+                </div>
+                <div class="slds-modal__footer slds-theme--default">
+                    <aura:renderIf isTrue="{! !v.fixed}">
+                        <button class="slds-button slds-button--neutral" onclick="{!c.closeAlert}">OK</button>
+                    </aura:renderIf>
+                </div>
+            </div>
+        </div>
+        <div class="{!'slds-backdrop '+((v.show &amp;&amp; v.mode == 'prompt')?'slds-backdrop--open':'slds-backdrop--close')}"></div>
+        <!-- PROMPT END -->
+    
+        <!-- ALERT START -->
+        <div class="{!'slds-notify_container '+((v.show &amp;&amp; v.mode == 'alert')?'slds-show':'slds-hide')}">
+            <div class="{!'slds-notify slds-notify--alert slds-theme--alert-texture slds-theme--'+v.type}" role="alert">
+                <button 
+                    onclick="{!c.closeAlert}" 
+                    class="slds-button slds-notify__close slds-button--icon-inverse" 
+                    title="Close">
+                    <lightning:icon iconName="utility:close" 
+                                    variant="bare"
+                                    size="medium"/>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+            <span class="slds-assistive-text">{!v.type}</span>
+                <h2>
+                    <lightning:icon class="slds-m-right--x-small"
+                                    iconName="{!'utility:'+((v.type=='warning' || v.type=='error')?'warning':'announcement')}" 
+                                    variant="bare"
+                                    size="small"/>
+                    
+                    {!v.message}
+                </h2>
+                <p>{!v.details}</p>
+            </div>
+        </div>
+    
+        <!-- ALERT END -->
+    
+        <!-- TOAST START -->
+        <div class="{!'slds-notify_container '+((v.show &amp;&amp; v.mode == 'toast')?'slds-show':'slds-hide')}">
+            <div class="{!'slds-notify slds-notify--toast slds-theme--'+v.type}" role="alert">
+                <span class="slds-assistive-text">{!v.type}</span>
+                    <button 
+                        onclick="{!c.closeAlert}" 
+                        class="slds-button slds-notify__close slds-button--icon-inverse" 
+                        title="Close">
+                        <lightning:icon class="slds-button__icon slds-button__icon--large"
+                                    iconName="utility:close" 
+                                    variant="bare"
+                                        size="medium"/>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                <div class="slds-notify__content slds-grid">
+                    <lightning:icon class="slds-m-right--x-small"
+                                    iconName="{!'utility:'+((v.type=='warning' || v.type=='error')?'warning':'announcement')}" 
+                                    variant="bare"
+                                    size="small"/>
+                    <div class="slds-col slds-align-middle">
+                        <h2 class="slds-text-heading--small">{!v.message}</h2>
+                        <p>{!v.details}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TOAST END -->
+	</div>
+</aura:component>

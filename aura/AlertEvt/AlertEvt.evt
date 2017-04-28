@@ -1,0 +1,36 @@
+<aura:event type="APPLICATION" description="AlertCmp triggering event" >
+    <aura:attribute name="show" 
+                    type="Boolean" 
+                    access="global"
+                    default="false"
+                    description="Show/Hide"/>
+    
+    <aura:attribute name="mode" 
+                    type="String" 
+                    access="global"
+                    default="prompt"
+                    description="alert, toast, prompt"/>
+
+    <aura:attribute name="fixed" 
+                    type="Boolean" 
+                    access="global"
+                    default="false"
+                    description="The modal is not closable"/>
+
+	<aura:attribute name="type" 
+                    type="String" 
+                    access="global"
+                    default="error"
+                    description="Type of alert: default, success, error, warning"/>
+
+    <aura:attribute name="message" 
+                    type="String" 
+                    access="global"
+                    description="Main alert message"/>
+
+    <aura:attribute name="details" 
+                    type="String" 
+                    access="global"
+                    description="Details message"/>
+    
+</aura:event>
